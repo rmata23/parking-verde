@@ -1,0 +1,40 @@
+{% extends 'base/baseadmin.html' %}
+
+{% block title %} {{ title }}  {% endblock %}
+
+{% block content %}
+
+  {% from "_macro.html" import render_field %}
+
+  {% if registros_list %}        
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Matricula</th>
+            <th scope="col">Estacionamiento</th>
+            <th scope="col">Fecha de entrada</th>
+            <th scope="col">Hora de entrada</th>
+            <th scope="col">Fecha de salida</th>
+            <th scope="col">Hora de salida</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for registro in registros_list %}
+                <tr>
+                  <th scope="row">{{ registro.id }}</th>
+                  <td>{{ registro.matricula }}</td>
+                  <td>{{ registro.estacionamiento }}</td>
+                  <td>{{ registro.fecha_entrada }}</td>
+                  <td>{{ registro.hora_entrada }}</td>
+                  <td>{{ registro.fecha_salida }}</td>
+                  <td>{{ registro.hora_salida }}</td>
+                  <td>{{ registro.total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  {% endif %}
+
+{% endblock %}

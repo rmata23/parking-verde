@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+
+{% block title %} {{ title }}  {% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">
+  window.onload = function codi(){
+      /*var caracteres = "15A2B3C4DE6F789GHJKMNPQRTUVWXYZ";
+      var codigo = "";
+      for (i=0; i<10; i++) codigo +=caracteres.charAt(Math.floor(Math.random()*codigo.length)); 
+      console.log(codigo)
+      document.getElementById("CodigoE").value = codigo;*/
+      
+      var hoy = new Date();
+      var hora = hoy.getHours() + ':' + hoy.getMinutes();
+     
+      var fecha = hoy.getFullYear()+ '-' + (hoy.getMonth() + 1)  + '-' + hoy.getDate() ;
+
+      console.log(fecha)
+
+      document.getElementById("HoraE").value=hora;
+      document.getElementById("FechaE").value=fecha;
+      }
+</script>
+        <main class="formulario">
+            <form id="entrada-form" method="POST">
+              <h1 class="h3 mb-4 fw-normal">Registro de entrada</h1>
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <div class="form-floating">
+                {{ form.estacionamiento(class="form-control", type='text', id='Estacionamiento', placeholder='E162000') }}
+                {{ form.estacionamiento.label(for=Estacionamiento) }}
+              </div>
+              <div class="form-floating">
+                {{ form.matricula(class="form-control", type='text', id='CodigoE', placeholder='mxn-123') }}
+                {{ form.matricula.label(for=CodigoE) }}
+              </div>
+              <div class="input-group">
+                <div class="form-floating" style="width: 50%;">
+                {{ form.fechaE(class="form-control",id='FechaE', placeholder='13/04/22 13:00') }}
+                {{ form.fechaE.label(for=fechaE) }}
+              </div>
+              <div class="form-floating" style="width: 50%;">
+                {{ form.horaE(class="form-control",id='HoraE', placeholder='13:00') }}
+                {{ form.horaE.label(for=HoraE) }}
+              </div>
+              
+              </div>
+              <br>
+              
+              <button class="btn btn-primary" type="submit" style="width: 49%;">Registrar</button>
+              <button class="btn btn-danger" type="button" onclick="location.href='/'" style="width: 49%;">Cancelar</button>
+              
+            </form>
+          </main>
+
+{% endblock %}

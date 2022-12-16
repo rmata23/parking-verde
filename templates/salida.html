@@ -1,0 +1,178 @@
+{% extends 'base/base.html' %}
+
+{% block title %} {{ title }}  {% endblock %}
+
+{% block content %}
+<script type="text/javascript">
+  window.onload = function codi(){
+      var hoy = new Date();
+      
+      var fecha = hoy.getFullYear()+ '-' + (hoy.getMonth() + 1)  + '-' + hoy.getDate() ;
+
+      var fecha1 = hoy.getFullYear()+ '-' + (hoy.getMonth() + 1)  + '-' +hoy.getDate()  ;
+      
+      var hora = hoy.getHours() + ':' + hoy.getMinutes();
+      document.getElementById("HoraS").value=hora;
+      document.getElementById("FechaS").value=fecha;
+
+
+       var horaEntrada = document.getElementById("HoraE").value
+       var fechaEntrada  = new Date(document.getElementById("FechaE").value);
+       var dif =( new Date(fecha1).getTime() - new Date(fechaEntrada).getTime())/(1000*3600*24);
+
+      inicio = document.getElementById("HoraE").value;
+      fin = hora;
+  
+      inicioMinutos = parseInt(inicio.substr(3,2));
+      inicioHoras = parseInt(inicio.substr(0,2));
+      
+      finMinutos = parseInt(fin.substr(3,2));
+      finHoras = parseInt(fin.substr(0,2));
+
+      transcurridoMinutos = finMinutos - inicioMinutos;
+      transcurridoHoras = finHoras - inicioHoras;
+      
+      if (transcurridoMinutos < 0) {
+        transcurridoHoras--;
+        transcurridoMinutos = 60 + transcurridoMinutos;
+      }
+      
+      horas = transcurridoHoras.toString();
+      minutos = transcurridoMinutos.toString();
+      
+      if (horas.length < 2) {
+        horas = "0"+horas;
+      }
+      
+      if (horas.length < 2) {
+        horas = "0"+horas;
+      }
+
+      if (transcurridoHoras<1 && transcurridoMinutos<25){
+        document.getElementById("Total").value = "0";
+      } else if (dif==0 && transcurridoHoras<3){
+        
+        document.getElementById("Total").value = 20;
+      }else if (dif==0 && transcurridoHoras>2 && transcurridoHoras<24){
+        n=20;
+        for(var i = 2; i<=transcurridoHoras; i++){
+            n=n+20;
+          }
+        document.getElementById("Total").value = n;
+
+      }else if (dif < 7){
+        n=200*dif;
+        
+        document.getElementById("Total").value = n;
+        
+      }else if (dif == 7){
+
+        n=1000;
+        
+        document.getElementById("Total").value = n;
+        
+      }else if (dif >7 && dif < 30){
+        na = dif - 7;
+
+        if (na<7){
+          na = na *200;
+          n=1000+na;
+        }else if (na >7){
+          nm =na- 7;
+          mn = diff-nm;
+          n = (1000*mn)+(nm*200); 
+
+        }
+        document.getElementById("Total").value = n;
+      }else if (dif == 30){
+        n=4000;
+        document.getElementById("Total").value = n; 
+      }
+
+      console.log(horas+":"+minutos)
+      console.log(dif)
+      }
+
+  
+</script>
+
+{%if entrada_list %}
+  {%for Entrada in entrada_list %}
+
+     
+            <main class="formulario">
+                <form id="salida-form" method="POST">
+                  <h1 class="h3 mb-4 fw-normal">Registro de salida</h1>
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <div class="form-floating">
+                    {{ form.matricula(class="form-control", type='text', id='CodigoE', value=Entrada.matricula, reaonly="true") }}
+                    {{ form.matricula.label(for=CodigoE) }}
+                    <!--<input type="text" class="form-control" id="CodigoS" placeholder="c001">
+                    <label for="CodigoS">Código o matrícula</label>-->
+                  </div>
+                  <div class="input-group">
+                  <div class="form-floating" style="width: 50%;">
+                    {{ form.fechaE(class="form-control", type='text', id='FechaE', value=Entrada.fecha_entrada, reaonly="true") }}
+                    {{ form.fechaE.label(for=HoraS) }}
+                  </div>
+                  <div class="form-floating" style="width: 50%;">
+                    {{ form.horaE(class="form-control", type='text', id='HoraE', value=Entrada.hora_entrada, reaonly="true") }}
+                    {{ form.horaE.label(for=HoraS) }}
+                  </div>
+                  </div>
+                  <div class="input-group">
+                  <div class="form-floating" style="width: 50%;">
+                    {{ form.fechaS(class="form-control", type='text', id='FechaS', reaonly="true") }}
+                    {{ form.fechaS.label(for=FechaS) }}
+                  </div>
+                  <div class="form-floating" style="width: 50%;">
+                    {{ form.horaS(class="form-control", type='text', id='HoraS', reaonly="true") }}
+                    {{ form.horaS.label(for=HoraS) }}
+                  </div>
+                  </div>
+                  
+                  <div class="form-floating">
+                    {{ form.total(class="form-control", type='text', id='Total') }}
+                    {{ form.total.label(for=Total) }}
+                  </div>
+                  
+                  <br>
+        
+                  <button class="btn btn-primary" type="submit" style="width: 49%;">Pagar</button>
+                  <button class="btn btn-danger" type="button" onclick="location.href='/salida'" style="width: 49%;">Cancelar</button> 
+                  
+                </form>
+              </main>
+
+  {%endfor %}
+{%else %}
+        <main class="formulario">
+                <form id="salida-form" method="POST">
+                  <h1 class="h3 mb-4 fw-normal">Registro de salida</h1>
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <div class="form-floating">
+                    {{ form.matricula(class="form-control", type='text', id='CodigoE') }}
+                    {{ form.matricula.label(for=CodigoE) }}
+                    <!--<input type="text" class="form-control" id="CodigoS" placeholder="c001">
+                    <label for="CodigoS">Código o matrícula</label>-->
+                  </div>
+                  <div class="form-floating">
+                    {{ form.horaS(class="form-control", type='text', id='HoraS') }}
+                    {{ form.horaS.label(for=HoraS) }}
+                  </div>
+                  <div class="form-floating">
+                    {{ form.total(class="form-control", type='text', id='Total') }}
+                    {{ form.total.label(for=Total) }}
+                  </div>
+                  
+                  <br>
+                  <button class="btn btn-primary" id="buscador" type="button" style="width: 49%;">Buscar</button>
+                  <button class="btn btn-primary" type="submit" style="width: 49%;">Calcular</button>
+                  <button class="btn btn-danger" type="button" onclick="location.href='/salida'" style="width: 49%;">Cancelar</button> 
+                  
+                </form>
+              </main>
+
+{%endif%}
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base/baseadmin.html' %}
+
+{% block title %} {{ title }}  {% endblock %}
+
+{% block content %}
+
+{% from "_macro.html" import render_field %}
+
+        <main class="formulario">
+            <form id="registro-form" method="POST">
+              <h1 class="h3 mb-4 fw-normal">Registro de estacionamiento</h1>
+              
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+              <div class="form-floating">
+                {{ form.nombre(class="form-control", type='text', id='Nombre', placeholder='E162000') }}
+                {{ form.nombre.label(for=Nombre) }}
+              </div>
+              <div class="form-floating">
+                {{ form.direccion(class="form-control", type='text', id='Direccion', placeholder='C. Motolinia 10, 62000, Morelos') }}
+                {{ form.direccion.label(for=Direccion) }}
+              </div>
+              <div class="form-floating">
+                {{ form.telefono(class="form-control", type='text', id='Telefono', placeholder='7772278621') }}
+                {{ form.telefono.label(for=Telefono) }}
+              </div>
+              <div class="form-floating">
+                {{ form.capacidad(class="form-control", type='text', id='Capacidad', placeholder='500') }}
+                {{ form.capacidad.label(for=Capacidad) }}
+              </div>
+              
+              <br>
+
+              <button class="w-100 btn btn-lg btn-primary" type="submit">Añadir</button>
+              
+              
+            </form>
+          </main>
+
+{% endblock %}

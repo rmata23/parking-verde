@@ -1,0 +1,35 @@
+{% extends 'base/baseadmin.html' %}
+
+{% block title %} {{ title }}  {% endblock %}
+
+{% block content %}
+
+    {% from "_macro.html" import render_field %}
+
+{% if estacionamientos %}        
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Dirección</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Capacidad</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for estacionamiento in estacionamientos %}
+                <tr>
+                  <th scope="row">{{ estacionamiento.id }}</th>
+                  <td>{{ estacionamiento.nombre }}</td>
+                  <td>{{ estacionamiento.direccion }}</td>
+                  <td>{{ estacionamiento.telefono }}</td>
+                  <td>{{ estacionamiento.capacidad }}</td>
+                  <td> <a href="/eliminar/{{ estacionamiento.id }}">Eliminar</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+{% endblock %}
